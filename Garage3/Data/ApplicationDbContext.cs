@@ -23,6 +23,12 @@ namespace Garage3.Data
             //    .Property(p => p.ArrivalTime)
             //    .HasDefaultValueSql("GETDATE()");
 
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(v => v.Owner)
+                .WithMany(u => u.Vehicles)
+                .HasForeignKey(v => v.OwnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Parking>()
                 .HasIndex(p => new { p.VehicleId, p.DepartTime })
                 .HasFilter("[DepartTime] IS NULL"); // Ensures a vehicle can have only one active parking
