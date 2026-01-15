@@ -37,6 +37,10 @@ namespace Garage3.Data
                 .WithMany(ps => ps.Parkings)
                 .HasForeignKey(p => p.ParkingSpotId);
 
+            modelBuilder.Entity<ApplicationUser>()
+                .HasIndex(u => u.SSN)
+                .IsUnique();
+
         }
     }
 
