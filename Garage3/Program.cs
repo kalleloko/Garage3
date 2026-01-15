@@ -1,14 +1,16 @@
 using Garage3.Data;
 using Garage3.Models;
 using Garage3.Services;
+using Garage3.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Garage3
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,7 @@ namespace Garage3
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                await app.SeedDataAsync();
             }
             else
             {
