@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -198,12 +199,16 @@ namespace Garage3.Controllers
             IQueryable<Vehicle> query = _vehicleService.GetAll();
 
             ViewData["TypesSelectList"] = query
-                .GroupBy(v => v.Type)
-                .OrderBy(g => g.Key)
+                .GroupBy(v => new
+                {
+                    v.VehicleTypeId,
+                    v.Type.Name
+                })
+                .OrderBy(g => g.Key.Name)
                 .Select(g => new SelectListItem
                 {
-                    Text = $"{g.Key} ({g.Count()})",
-                    Value = g.Key.ToString()
+                    Text = $"{g.Key.Name} ({g.Count()})",
+                    Value = g.Key.VehicleTypeId.ToString()
                 })
                 .ToList();
 
@@ -216,20 +221,28 @@ namespace Garage3.Controllers
                     v.RegistrationNumber.Contains(search));
             }
 
-            query = query.Where(v => v.Type.Name == type); // TODO: validate that type is valid VehicleType
+            if (!string.IsNullOrEmpty(type))
+            {
+                query = query.Where(v => v.Type != null && v.Type.Name == type);
+            }
 
+            Expression<Func<Vehicle, DateTime?>> ArrivalTimeExpression = (Vehicle v) =>
+                    v.Parkings
+                        .Where(p => p.DepartTime == null)
+                        .Select(p => p.ArrivalTime)
+                        .FirstOrDefault();
             // Sort
             query = sort switch
             {
-                "Type" => query.OrderBy(v => v.Type.ToString()),
-                "Type_desc" => query.OrderByDescending(v => v.Type.ToString()),
+                "Type" => query.OrderBy(v => v.Type.Name),
+                "Type_desc" => query.OrderByDescending(v => v.Type.Name),
                 "RegistrationNumber" => query.OrderBy(v => v.RegistrationNumber),
                 "RegistrationNumber_desc" => query.OrderByDescending(v => v.RegistrationNumber),
-                "ArrivalTime" => query.OrderBy(v => v.ArrivalTime),
-                "ArrivalTime_desc" => query.OrderByDescending(v => v.ArrivalTime),
-                "ParkingTime" => query.OrderByDescending(v => v.ArrivalTime),
-                "ParkingTime_desc" => query.OrderBy(v => v.ArrivalTime),
-                _ => query.OrderBy(v => v.ArrivalTime)
+                "ArrivalTime" => query.OrderBy(ArrivalTimeExpression),
+                "ArrivalTime_desc" => query.OrderByDescending(ArrivalTimeExpression),
+                "ParkingTime" => query.OrderByDescending(ArrivalTimeExpression),
+                "ParkingTime_desc" => query.OrderBy(ArrivalTimeExpression),
+                _ => query.OrderBy(ArrivalTimeExpression)
             };
 
 

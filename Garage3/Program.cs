@@ -67,7 +67,7 @@ namespace Garage3
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Vehicles}/{action=Index}/{id?}")
+                pattern: "{controller=Vehicles}/{action=HomePage}/{id?}")
                 .WithStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();
