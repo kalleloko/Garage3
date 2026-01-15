@@ -18,6 +18,7 @@ namespace Garage3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //modelBuilder.Entity<Vehicle>()
             //    .Property(p => p.ArrivalTime)
             //    .HasDefaultValueSql("GETDATE()");
