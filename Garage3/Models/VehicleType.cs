@@ -1,11 +1,8 @@
 ﻿namespace Garage3.Models
 {
-    public enum VehicleType
+    public class VehicleType
     {
-        Car = 0,
-        Motorcycle = 1,
-        Truck = 2,
-        Bus = 3,
-        Bicycle = 4
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

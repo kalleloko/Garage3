@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections;
 
 namespace Garage3.Services
 {
@@ -110,5 +111,10 @@ namespace Garage3.Services
 		{
 			return _context.Vehicles.AsQueryable();
 		}
-	}
+
+        public IQueryable<VehicleType> GetVehicleTypes()
+        {
+            return _context.VehicleTypes.AsQueryable();
+        }
+    }
 }

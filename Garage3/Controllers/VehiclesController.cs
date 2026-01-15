@@ -49,7 +49,7 @@ namespace Garage3.Controllers
         // GET: Vehicles/Create
         public IActionResult Create()
         {
-            ViewData["VehicleTypeList"] = new SelectList(Enum.GetValues<VehicleType>());
+            ViewData["VehicleTypeList"] = new SelectList(_vehicleService.GetVehicleTypes());
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace Garage3.Controllers
                 );
             }
 
-            ViewData["VehicleTypeList"] = new SelectList(Enum.GetValues<VehicleType>(), vehicle.Type);
+            ViewData["VehicleTypeList"] = new SelectList(_vehicleService.GetVehicleTypes(), vehicle.Type);
             return View(vehicle);
         }
 
@@ -92,7 +92,7 @@ namespace Garage3.Controllers
             {
                 return NotFound();
             }
-            ViewData["VehicleTypeList"] = new SelectList(Enum.GetValues<VehicleType>(), vehicle.Type);
+            ViewData["VehicleTypeList"] = new SelectList(_vehicleService.GetVehicleTypes(), vehicle.Type);
             return View(vehicle);
         }
 
@@ -135,7 +135,7 @@ namespace Garage3.Controllers
                         ex.Message
                     );
                 }
-                ViewData["VehicleTypeList"] = new SelectList(Enum.GetValues<VehicleType>(), vehicle.Type);
+                ViewData["VehicleTypeList"] = new SelectList(_vehicleService.GetVehicleTypes(), vehicle.Type);
                 return View(vehicle);
             }
             return RedirectToAction(nameof(HomePage));
@@ -216,10 +216,8 @@ namespace Garage3.Controllers
                     v.RegistrationNumber.Contains(search));
             }
 
-            if (Enum.TryParse<VehicleType>(type, ignoreCase: true, out var filterByType))
-            {
-                query = query.Where(v => v.Type == filterByType);
-            }
+            query = query.Where(v => v.Type.Name == type); // TODO: validate that type is valid VehicleType
+
             // Sort
             query = sort switch
             {

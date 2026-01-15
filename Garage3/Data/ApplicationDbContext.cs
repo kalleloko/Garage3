@@ -14,12 +14,13 @@ namespace Garage3.Data
         public DbSet<Vehicle> Vehicles { get; set; } = default!;
         public DbSet<ParkingSpot> ParkingSpots { get; set; } = default!;
         public DbSet<Parking> Parkings { get; set; } = default!;
+        public DbSet<VehicleType> VehicleTypes { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Vehicle>()
-                .Property(p => p.ArrivalTime)
-                .HasDefaultValueSql("GETDATE()");
+            //modelBuilder.Entity<Vehicle>()
+            //    .Property(p => p.ArrivalTime)
+            //    .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<Parking>()
                 .HasIndex(p => new { p.VehicleId, p.DepartTime })

@@ -8,6 +8,7 @@ namespace Garage3.Models
     {
         public int Id { get; set; }
 
+        public int VehicleTypeId { get; set; }
         public VehicleType Type { get; set; }
 
         [Required]
