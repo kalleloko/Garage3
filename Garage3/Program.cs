@@ -1,4 +1,4 @@
-﻿using Garage3.Data;
+using Garage3.Data;
 using Garage3.Models;
 using Garage3.Services;
 using Microsoft.AspNetCore.Identity;
