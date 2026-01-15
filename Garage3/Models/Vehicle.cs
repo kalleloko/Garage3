@@ -29,8 +29,11 @@ namespace Garage3.Models
         [Display(Name = "Wheel Count")]
         public int WheelCount { get; set; }
 
-        [Required]
         [Display(Name = "Arrival Time")]
-        public DateTime ArrivalTime { get; set; }
+        public DateTime ArrivalTime => DateTime.Now; // TODO: Should be calculated from Parkings
+
+        public ICollection<Parking> Parkings { get; set; } = new List<Parking>();
+
+        public Parking? ActiveParking => Parkings.SingleOrDefault(p => p.DepartTime == null);
     }
 }
