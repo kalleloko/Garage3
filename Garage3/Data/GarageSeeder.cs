@@ -23,8 +23,7 @@ namespace Garage3.Data
                     Color = "Blue",
                     Brand = "Volvo",
                     Model = "XC60",
-                    WheelCount = 4,
-                    ArrivalTime = DateTime.Now.AddMinutes(-random.Next(10, 300))
+                    WheelCount = 4
                 });
             }
             context.Vehicles.AddRange(vehicels);
