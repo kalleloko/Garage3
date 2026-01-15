@@ -11,15 +11,16 @@ namespace Garage3.Services
 
 		public Receipt CreateReceipt(Vehicle vehicle, DateTime checkoutTime)
 		{
-			var price = vehicle.CalculatePrice(checkoutTime, HourlyParkingPrice);
+            var arrivalTime = vehicle.ArrivalTime ?? throw new ArgumentException("Vehicle has no arrival time.");
+
+            var price = vehicle.CalculatePrice(checkoutTime, HourlyParkingPrice);
 
 			return new Receipt()
 			{
 				RegistrationNumber = vehicle.RegistrationNumber,
 				Price = price,
-				ArrivalTime = vehicle.ArrivalTime,
+				ArrivalTime = arrivalTime,
 				CheckoutTime = checkoutTime
-
 			};
 		}
 	}

@@ -31,7 +31,7 @@ namespace Garage3.Models
         public int WheelCount { get; set; }
 
         [Display(Name = "Arrival Time")]
-        public DateTime ArrivalTime => DateTime.Now; // TODO: Should be calculated from Parkings
+        public DateTime? ArrivalTime => ActiveParking?.ArrivalTime ?? null;
 
         public ICollection<Parking> Parkings { get; set; } = new List<Parking>();
 

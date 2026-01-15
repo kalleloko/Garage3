@@ -12,38 +12,42 @@ namespace Garage3.Models
         public string RegistrationNumber { get; set; } = string.Empty;
 
         [Display(Name = "Arrival Time")]
-        public DateTime ArrivalTime { get; set; }
+        public DateTime? ArrivalTime { get; set; }
 
         [Display(Name = "Parking Time")]
         [DataType(DataType.Time)]
-        public TimeSpan ParkedTime => DateTime.Now > ArrivalTime ? DateTime.Now - ArrivalTime : TimeSpan.Zero;
+        public TimeSpan? ParkedTime => ArrivalTime != null ? (DateTime.Now > ArrivalTime ? DateTime.Now - ArrivalTime : TimeSpan.Zero) : null;
         public string ParkedTimeDisplay
         {
             get
             {
                 var t = ParkedTime;
+                if(t == null)
+                {
+                    return string.Empty;
+                }
 
-                if (t.TotalSeconds < 60)
+                if (t?.TotalSeconds < 60)
                 {
                     // less than 1 minute
-                    return $"{t.Seconds} sec";
+                    return $"{t?.Seconds} sec";
                 }
-                else if (t.TotalMinutes < 60)
+                else if (t?.TotalMinutes < 60)
                 {
                     // less than 1 hour
-                    return $"{t.Minutes} min";
+                    return $"{t?.Minutes} min";
                 }
-                else if (t.TotalHours < 24)
+                else if (t?.TotalHours < 24)
                 {
                     // less than 24 hours
-                    return $"{(int)t.TotalHours:D2}:{t.Minutes:D2}";
+                    return $"{(int)t?.TotalHours!:D2}:{t?.Minutes:D2}";
                 }
                 else
                 {
                     // 24 hours or more
-                    int days = t.Days;
-                    int hours = t.Hours;
-                    int minutes = t.Minutes;
+                    int days = (int)(t?.Days)!;
+                    int hours = (int)(t?.Hours)!;
+                    int minutes = (int)(t?.Minutes)!;
                     return $"{days} day{(days > 1 ? "s" : "")} {hours:D2}:{minutes:D2}";
                 }
             }
