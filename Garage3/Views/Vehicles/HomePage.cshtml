@@ -104,7 +104,7 @@
             <tr>
 
                 <td>
-                    @item.Type
+                    @item.Type.Name
                 </td>
                 <td>
                     @item.RegistrationNumber
@@ -118,7 +118,9 @@
                 <td>
                     <a asp-action="VehicleDetail" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">Pick up</a>
+                    @if(item.ArrivalTime != null) {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">Pick up</a>
+                    }
                 </td>
             </tr>
         }
