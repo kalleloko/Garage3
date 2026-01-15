@@ -1,0 +1,19 @@
+﻿@model Receipt
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<div class="d-flex flex-column align-items-center justify-self-center m-auto" style="max-width: 25rem">
+
+	<div class="bg-white text-dark p-3 rounded-3" style="width: 100%; height: 50vh">
+
+		<a asp-action="HomePage" class="btn btn-close float-end"></a>
+		<h2 class="">Parking Receipt</h2>
+		<p><strong>Registration Number:</strong> @Model.RegistrationNumber</p>
+		<p><strong>Arrival Time:</strong> @Model.ArrivalTime</p>
+		<p><strong>Checkout Time:</strong> @Model.CheckoutTime</p>
+		<p><strong>Total:</strong> @Model.Price.ToString()kr</p>
+
+		<button class="btn btn-primary d-print-none" onclick="window.print()">Print</button>
+	</div>
+</div>
