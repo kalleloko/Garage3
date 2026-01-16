@@ -175,3 +175,23 @@
 {
     @await Html.PartialAsync("_Receipt", (Receipt)ViewBag.Receipt)
 }
+
+@if(!User.Identity.IsAuthenticated)
+{
+    <p>Hi, please login</p>
+}
+
+@if(User.Identity.IsAuthenticated)
+{
+    if(User.IsInRole("Member"))
+    {
+        <p>Hello, Member</p>
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        <p>Hello Admin</p>
+    } else
+    {
+        <p>Hello User</p>
+    }
+}
