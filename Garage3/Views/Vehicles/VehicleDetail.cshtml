@@ -1,0 +1,13 @@
+﻿@model Garage3.Models.VehicleDetailViewModel
+
+@{
+    ViewData["Title"] = "VehicleDetail";
+}
+
+<partial name="_VehicleDetailPartial" model="Model" />
+
+<div class="container mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning"> Edit </a>
+    <br />
+    <a asp-action="HomePage" class=""> Back to List </a>
+</div>
