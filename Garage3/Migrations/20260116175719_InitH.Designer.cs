@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260116145141_Misc")]
-    partial class Misc
+    [Migration("20260116175719_InitH")]
+    partial class InitH
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -149,6 +149,9 @@ namespace Garage3.Migrations
                     b.Property<string>("SpotNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SpotSize")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

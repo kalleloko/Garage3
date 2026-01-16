@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Garage3.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitH : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
