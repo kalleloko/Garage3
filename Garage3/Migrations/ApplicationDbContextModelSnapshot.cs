@@ -129,7 +129,7 @@ namespace Garage3.Migrations
                     b.HasIndex("VehicleId", "DepartTime")
                         .HasFilter("[DepartTime] IS NULL");
 
-                    b.ToTable("Parkings");
+                    b.ToTable("Parkings", (string)null);
                 });
 
             modelBuilder.Entity("Garage3.Models.ParkingSpot", b =>
@@ -152,7 +152,7 @@ namespace Garage3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParkingSpots");
+                    b.ToTable("ParkingSpots", (string)null);
                 });
 
             modelBuilder.Entity("Garage3.Models.Vehicle", b =>
@@ -196,7 +196,7 @@ namespace Garage3.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("Vehicles");
+                    b.ToTable("Vehicles", (string)null);
                 });
 
             modelBuilder.Entity("Garage3.Models.VehicleType", b =>
@@ -213,7 +213,7 @@ namespace Garage3.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleTypes");
+                    b.ToTable("VehicleTypes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

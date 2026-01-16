@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Garage3.Models
 {
-    [Index(nameof(RegistrationNumber), IsUnique = true)]
     public class Vehicle
     {
         public int Id { get; set; }
@@ -35,6 +35,7 @@ namespace Garage3.Models
 
         public ICollection<Parking> Parkings { get; set; } = new List<Parking>();
 
+        [NotMapped]
         public Parking? ActiveParking => Parkings.SingleOrDefault(p => p.DepartTime == null);
     }
 }
