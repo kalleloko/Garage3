@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260116085455_ChangeParkingSpotModel")]
-    partial class ChangeParkingSpotModel
+    [Migration("20260116161756_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,10 +143,10 @@ namespace Garage3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsOccupied")
+                    b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SpotNUmber")
+                    b.Property<string>("SpotNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

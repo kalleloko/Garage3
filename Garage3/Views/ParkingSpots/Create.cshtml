@@ -15,14 +15,14 @@
                     <input asp-for="SpotNumber" class="form-control" placeholder="A1,A2,B1,B2,..." />
                     <span asp-validation-for="SpotNumber" class="text-danger"></span>
                 </div>
-                @* <div class="form-group mb-3">
+                <div class="form-group mb-3">
                     <label asp-for="SpotSize" class="control-label">Spot Size</label>
                     <select asp-for="SpotSize"
                             asp-items="ViewBag.SpotSize"
                             class="form-control">
                     </select>
                     <span asp-validation-for="SpotSize" class="text-danger"></span>
-                </div> *@
+                </div>
                 <div class="form-group form-check mb-3">
                     <label class="form-check-label">
                         <input class="form-check-input" asp-for="IsBlocked" />

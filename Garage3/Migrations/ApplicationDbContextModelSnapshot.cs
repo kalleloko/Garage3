@@ -143,7 +143,7 @@ namespace Garage3.Migrations
                     b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SpotNUmber")
+                    b.Property<string>("SpotNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

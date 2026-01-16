@@ -18,14 +18,14 @@
                 <input asp-for="SpotNumber" class="form-control" />
                 <span asp-validation-for="SpotNumber" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
+            <div class="form-group">
                 <label asp-for="SpotSize" class="control-label"></label>
                 <select asp-for="SpotSize"
                         asp-items="ViewBag.SpotSize"
                         class="form-control">
                 </select>
                 <span asp-validation-for="SpotSize" class="text-danger"></span>
-            </div> *@
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsBlocked" /> @Html.DisplayNameFor(model => model.IsBlocked)
