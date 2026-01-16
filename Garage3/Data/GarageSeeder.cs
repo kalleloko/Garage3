@@ -5,12 +5,14 @@ namespace Garage3.Data
     public static class GarageSeeder
     {
         private static List<int> _vehicleTypeIds;
-        public static void Seed(ApplicationDbContext context)
+
+        private static readonly Random _random = new();
+        public static void Seed(ApplicationDbContext context, IEnumerable<ApplicationUser> users)
         {
             SeedVehicleTypes(context);
-            SeedVehicles(context);
+            SeedVehicles(context, users);
         }
-
+            
         private static void SeedVehicleTypes(ApplicationDbContext context)
         {
             VehicleType[] vehicleTypes =
@@ -30,7 +32,7 @@ namespace Garage3.Data
             }
         }
 
-        private static void SeedVehicles(ApplicationDbContext context)
+        private static void SeedVehicles(ApplicationDbContext context, IEnumerable<ApplicationUser> users)
         {
             if (context.Vehicles.Any())
             {
@@ -44,11 +46,12 @@ namespace Garage3.Data
                 vehicles.Add(new Vehicle
                 {
                     VehicleTypeId = GenerateUniqueVehicleType(context),
+                    OwnerId = GetRandom(users.ToList())?.Id ?? string.Empty,
                     RegistrationNumber = GenerateUniqueRegNr(i),
-                    Color = "Blue",
-                    Brand = "Volvo",
-                    Model = "XC60",
-                    WheelCount = 4
+                    Color = GetRandom(new List<string>() { "Blue", "Red", "Green", "Black", "White", "Yellow", "Pink" })!,
+                    Brand = GetRandom(new List<string>() { "Volvo", "Saab", "BMW", "Volkswagen", "Toyota", "Mazda", "Audi", "Ford", "Yamaha", "Honda" })!,
+                    Model = GetRandom(new List<string>() { "V70", "XC60", "9-3", "900", "Compact", "Raket", "320", "X5", "Golf", "Passat" })!,
+                    WheelCount = GetRandom(new List<int>() { 2, 4, 6, 8, 12})
                 });
             }
             context.Vehicles.AddRange(vehicles);
@@ -57,7 +60,6 @@ namespace Garage3.Data
 
         private static int GenerateUniqueVehicleType(ApplicationDbContext context)
         {
-            var random = new Random();
             var vehicleTypeIds = _vehicleTypeIds == null ?
                 context.VehicleTypes.Select(vt => vt.Id).ToList() : _vehicleTypeIds;
 
@@ -66,13 +68,22 @@ namespace Garage3.Data
 
             _vehicleTypeIds = vehicleTypeIds;
             
-            return vehicleTypeIds[random.Next(vehicleTypeIds.Count)];
+            return GetRandom<int>(vehicleTypeIds);
 
         }
 
         private static string GenerateUniqueRegNr(int index)
         {
             return $"DEV{index:000}";
+        }
+
+        private static T? GetRandom<T>(IList<T> list)
+        {
+            if(list == null || list.Count == 0)
+            {
+                return default;
+            }
+            return list[_random.Next(list.Count)];
         }
     }
 }

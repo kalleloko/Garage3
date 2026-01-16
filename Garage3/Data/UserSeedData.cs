@@ -9,27 +9,31 @@ namespace Garage3.Data
         private static RoleManager<IdentityRole> _roleManager = default!;
         private static UserManager<ApplicationUser> _userManager = default!;
 
-        public static async Task Init(ApplicationDbContext context, IServiceProvider services)
+        public static async Task<IEnumerable<ApplicationUser>> Init(ApplicationDbContext context, IServiceProvider services)
         {
             _context = context;
 
-            if (_context.Roles.Any()) return;
-
             _roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             _userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-
             var roleNames = new[] { "Member", "Admin" };
+            foreach (var role in roleNames)
+            {
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
 
             var adminEmail = "admin@admin.com";
             var memberEmail = "member@member.com";
 
-            await AddRolesAsync(roleNames);
-
             var admin = await AddAccountAsync(adminEmail, "Admin", "Johansoon", "199010112345", "Test.qrw1!");
-            var member = await AddAccountAsync(memberEmail, "Member", "Smith", "19991212-2300", "Test.qrw2!");
+            var member = await AddAccountAsync(memberEmail, "Member", "Smith", "199912122300", "Test.qrw2!");
 
             await AddUserToRoleAsync(admin, "Admin");
             await AddUserToRoleAsync(member, "Member");
+
+            return new[] { admin, member };
 
         }
 
@@ -46,7 +50,7 @@ namespace Garage3.Data
         {
             var found = await _userManager.FindByNameAsync(accountEmail);
 
-            if (found != null) return null!;
+            if (found != null) return found;
 
             var user = new ApplicationUser
             {

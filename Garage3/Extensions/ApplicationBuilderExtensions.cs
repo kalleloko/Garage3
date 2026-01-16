@@ -13,7 +13,8 @@ namespace Garage3.Extensions
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 try
                 {
-                    await UserSeedData.Init(context, services);
+                    var users = await UserSeedData.Init(context, services);
+                    GarageSeeder.Seed(context, users);
                 }
                 catch (Exception)
                 {

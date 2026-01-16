@@ -32,22 +32,22 @@ namespace Garage3
             var app = builder.Build();
 
             //Migration + seed data
-            using (var scope = app.Services.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                try
-                {
-                    context.Database.Migrate();
-                    GarageSeeder.Seed(context);
-                }
-                catch (Exception ex)
-                {
-                    // Important: visible during startup
-                    Console.WriteLine("❌ Database migration or seeding failed:");
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            //    try
+            //    {
+            //        context.Database.Migrate();
+            //        GarageSeeder.Seed(context);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        // Important: visible during startup
+            //        Console.WriteLine("❌ Database migration or seeding failed:");
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //}
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
