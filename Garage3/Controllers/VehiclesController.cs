@@ -178,7 +178,7 @@ namespace Garage3.Controllers
         }
 
         //VehicleView
-        public async Task<IActionResult> HomePage(int page = 1, string? search = null, string? sort = nameof(VehicleViewModel.ArrivalTime), string? type = "")
+        public async Task<IActionResult> HomePage(int page = 1, string? search = null, string? sort = nameof(VehicleRowViewModel.ArrivalTime), string? type = "")
         {
             int pageSize = 20;
 
@@ -188,6 +188,7 @@ namespace Garage3.Controllers
             // Determine sort order for each column (toggle ascending/descending)
             ViewData["CurrentSort"] = sort; // stores current column + direction
             ViewData["TypeSortParam"] = sort == "Type" ? "Type_desc" : "Type";
+            ViewData["OwnerSortParam"] = sort == "Owner" ? "Owner_desc" : "Owner";
             ViewData["RegSortParam"] = sort == "RegistrationNumber" ? "RegistrationNumber_desc" : "RegistrationNumber";
             ViewData["ArrivalSortParam"] = sort == "ArrivalTime" ? "ArrivalTime_desc" : "ArrivalTime";
             ViewData["ParkingTimeSortParam"] = sort == "ParkingTime" ? "ParkingTime_desc" : "ParkingTime";
@@ -231,11 +232,17 @@ namespace Garage3.Controllers
                         .Where(p => p.DepartTime == null)
                         .Select(p => p.ArrivalTime)
                         .FirstOrDefault();
+
+            query = query.Include(v => v.Type)
+                         .Include(v => v.Owner)
+                         .Include(v => v.Parkings);
             // Sort
             query = sort switch
             {
                 "Type" => query.OrderBy(v => v.Type.Name),
                 "Type_desc" => query.OrderByDescending(v => v.Type.Name),
+                "Owner" => query.OrderBy(v => v.Owner.Id),
+                "Owner_desc" => query.OrderByDescending(v => v.Owner.Id),
                 "RegistrationNumber" => query.OrderBy(v => v.RegistrationNumber),
                 "RegistrationNumber_desc" => query.OrderByDescending(v => v.RegistrationNumber),
                 "ArrivalTime" => query.OrderBy(ArrivalTimeExpression),
@@ -252,16 +259,19 @@ namespace Garage3.Controllers
             var vehicles = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(v => new VehicleViewModel
+                .Select(v => new VehicleRowViewModel
                 {
                     Id = v.Id,
                     ArrivalTime = v.ArrivalTime,
                     RegistrationNumber = v.RegistrationNumber,
                     Type = v.Type,
+                    OwnerName = v.Owner.FirstName + " " + v.Owner.LastName,
+                    OwnerEmail = v.Owner.Email ?? string.Empty,
+                    OwnerId = v.Owner.Id
                 })
                 .ToListAsync();
 
-            var result = new PagedResult<VehicleViewModel>
+            var result = new PagedResult<VehicleRowViewModel>
             {
                 Items = vehicles,
                 PageNumber = page,

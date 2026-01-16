@@ -1,4 +1,4 @@
-﻿@model PagedResult<Garage3.Models.VehicleViewModel>
+﻿@model PagedResult<Garage3.Models.VehicleRowViewModel>
 
 @{
     ViewData["Title"] = "HomePage";
@@ -26,6 +26,19 @@
 <table class="table table-striped table-bordered">
     <thead class="table-dark">
         <tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    <a asp-action="HomePage"
+                       asp-route-sort="@ViewData["OwnerSortParam"]"
+                       asp-route-search="@ViewData["CurrentFilter"]"
+                       asp-route-type="@ViewData["CurrentType"]"
+                       class="text-decoration-none text-white">
+                        Owner
+                    </a>
+
+                </th>
+            }
             <th>
                 <a asp-action="HomePage"
                    asp-route-sort="@ViewData["TypeSortParam"]"
@@ -64,8 +77,8 @@
             <th>
                 <a asp-action="HomePage"
                    asp-route-sort="@ViewData["ArrivalSortParam"]"
-                   asp-route-search="@ViewData["CurrentFilter"]"
-                   asp-route-type="@ViewData["CurrentType"]"
+                   asp-route-search="@ViewData["ArrivalSortParam"]"
+                   asp-route-type="@ViewData["CurrentFilter"]"
                    class="text-decoration-none text-white">
                     @Html.DisplayNameFor(model => model.Items.First().ArrivalTime)
                     @if (ViewData["CurrentSort"]?.ToString() == "ArrivalTime")
@@ -102,7 +115,12 @@
         @foreach (var item in Model.Items)
         {
             <tr>
-
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @item.OwnerName <br /><small class="text-secondary">@item.OwnerEmail</small>
+                    </td>
+                }
                 <td>
                     @item.Type.Name
                 </td>

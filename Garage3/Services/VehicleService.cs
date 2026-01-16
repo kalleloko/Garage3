@@ -86,7 +86,7 @@ namespace Garage3.Services
 			return ex.InnerException?.Message.Contains("UNIQUE") == true;
 		}
 
-		public IEnumerable<VehicleViewModel> Select(Func<Vehicle, VehicleViewModel> p)
+		public IEnumerable<VehicleRowViewModel> Select(Func<Vehicle, VehicleRowViewModel> p)
 		{
 			var vehicle = _context.Vehicles;
 			return vehicle.Select(p);

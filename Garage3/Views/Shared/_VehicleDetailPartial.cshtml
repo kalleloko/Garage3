@@ -1,7 +1,7 @@
 ﻿@model Garage3.Models.VehicleDetailViewModel
 
 <div class="border border-light-subtle p-2 border-opacity-10 rounded bg-gradient box-shadow mt-5">
-    <h4 class="mb-3">Parked Vehicle Detail</h4>
+    <h4 class="mb-3">Vehicle Detail</h4>
     <div class="row">
         <div class="col-md-6">
             <dl class="row">
@@ -45,18 +45,7 @@
                 <dd class="col-sm-8">
                     @Html.DisplayFor(model => model.WheelCount)
                 </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.ArrivalTime)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.ArrivalTime)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.ParkedTime)
-                </dt>
-                <dd class="col-sm-8">
-                    @Model.ParkedTimeDisplay
-                </dd>
+                
             </dl>
 
         </div>
