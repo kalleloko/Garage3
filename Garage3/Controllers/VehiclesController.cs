@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -236,6 +237,13 @@ namespace Garage3.Controllers
             query = query.Include(v => v.Type)
                          .Include(v => v.Owner)
                          .Include(v => v.Parkings);
+
+            if (User.IsInRole("Member"))
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                query = query.Where(v => v.OwnerId == userId);
+            }
+
             // Sort
             query = sort switch
             {
@@ -267,7 +275,10 @@ namespace Garage3.Controllers
                     Type = v.Type,
                     OwnerName = v.Owner.FirstName + " " + v.Owner.LastName,
                     OwnerEmail = v.Owner.Email ?? string.Empty,
-                    OwnerId = v.Owner.Id
+                    OwnerId = v.Owner.Id,
+                    Color = v.Color ?? string.Empty,
+                    Brand = v.Brand ?? string.Empty,
+                    Model = v.Model ?? string.Empty
                 })
                 .ToListAsync();
 
@@ -278,6 +289,8 @@ namespace Garage3.Controllers
                 PageSize = pageSize,
                 TotalItems = totalItems
             };
+
+            ViewData["VehicleTotalCount"] = await _vehicleService.GetAll().CountAsync();
 
             return View(result);
         }
