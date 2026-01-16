@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Garage3/Migrations/20260116091909_Init.Designer.cs
     [Migration("20260116091909_Init")]
+========
+    [Migration("20260116161756_Init")]
+>>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116161756_Init.Designer.cs
     partial class Init
     {
         /// <inheritdoc />
@@ -77,7 +81,7 @@ namespace Garage3.Migrations
 
                     b.Property<string>("SSN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +102,9 @@ namespace Garage3.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("SSN")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -140,9 +147,15 @@ namespace Garage3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SpotNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SpotSize")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

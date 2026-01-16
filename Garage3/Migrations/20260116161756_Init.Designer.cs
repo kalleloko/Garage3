@@ -12,8 +12,12 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260116085455_ChangeParkingSpotModel")]
-    partial class ChangeParkingSpotModel
+<<<<<<<< HEAD:Garage3/Migrations/20260116091909_Init.Designer.cs
+    [Migration("20260116091909_Init")]
+========
+    [Migration("20260116161756_Init")]
+>>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116161756_Init.Designer.cs
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,10 +147,10 @@ namespace Garage3.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsOccupied")
+                    b.Property<bool>("IsBlocked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("SpotNUmber")
+                    b.Property<string>("SpotNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -181,6 +185,10 @@ namespace Garage3.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("RegistrationNumber")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -193,6 +201,8 @@ namespace Garage3.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.HasIndex("RegistrationNumber")
                         .IsUnique();
@@ -377,11 +387,19 @@ namespace Garage3.Migrations
 
             modelBuilder.Entity("Garage3.Models.Vehicle", b =>
                 {
+                    b.HasOne("Garage3.Models.ApplicationUser", "Owner")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Garage3.Models.VehicleType", "Type")
                         .WithMany()
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Owner");
 
                     b.Navigation("Type");
                 });
@@ -435,6 +453,11 @@ namespace Garage3.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Garage3.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("Garage3.Models.ParkingSpot", b =>

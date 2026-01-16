@@ -10,7 +10,7 @@ namespace Garage3.Models
         [Display(Name = "Spot Number")]
         public string SpotNumber { get; set; } = default!;
 
-        //public ParkingSize SpotSize { get; set; } = default!;
+        public ParkingSize SpotSize { get; set; } = default!;
 
         // Admin-controlled state (snow, maintenance, ...)
         public bool IsBlocked { get; set; }
