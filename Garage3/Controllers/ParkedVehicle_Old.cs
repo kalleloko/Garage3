@@ -15,11 +15,11 @@ using System.Threading.Tasks;
 
 namespace Garage3.Controllers
 {
-    public class a : Controller
+    public class ParkedVehicle_Old : Controller
     {
         private readonly VehicleService _vehicleService;
 
-        public a(VehicleService vehicleService)
+        public ParkedVehicle_Old(VehicleService vehicleService)
         {
             _vehicleService = vehicleService;
         }
