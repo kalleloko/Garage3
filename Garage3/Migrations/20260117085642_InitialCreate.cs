@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Garage3.Migrations
 {
     /// <inheritdoc />
-    public partial class InitH : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -209,11 +209,7 @@ namespace Garage3.Migrations
                         column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-<<<<<<<< HEAD:Garage3/Migrations/20260116175719_InitH.cs
                         onDelete: ReferentialAction.Restrict);
-========
-                        onDelete: ReferentialAction.Cascade);
->>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116234356_Init.cs
                     table.ForeignKey(
                         name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
@@ -308,14 +304,6 @@ namespace Garage3.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vehicles_OwnerId",
-<<<<<<<< HEAD:Garage3/Migrations/20260116175719_InitH.cs
-                table: "Vehicles",
-                column: "OwnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_RegistrationNumber",
-========
->>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116234356_Init.cs
                 table: "Vehicles",
                 column: "OwnerId");
 

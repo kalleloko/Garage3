@@ -378,9 +378,9 @@ namespace Garage3.Migrations
             modelBuilder.Entity("Garage3.Models.Vehicle", b =>
                 {
                     b.HasOne("Garage3.Models.ApplicationUser", "Owner")
-                        .WithMany()
+                        .WithMany("Vehicles")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Garage3.Models.VehicleType", "Type")
@@ -443,6 +443,11 @@ namespace Garage3.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Garage3.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("Garage3.Models.ParkingSpot", b =>

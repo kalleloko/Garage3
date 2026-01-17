@@ -72,9 +72,11 @@ namespace Garage3.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized();
                 vehicle.OwnerId = userId;
                 _context.Add(vehicle);
-                await _context.SaveChangesAsync();
+                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["OwnerId"] = new SelectList(_context.Users, "Id", "UserName", vehicle.OwnerId);

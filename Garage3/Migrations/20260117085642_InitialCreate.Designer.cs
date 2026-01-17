@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Garage3/Migrations/20260116175719_InitH.Designer.cs
-    [Migration("20260116175719_InitH")]
-    partial class InitH
-========
-    [Migration("20260116234356_Init")]
-    partial class Init
->>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116234356_Init.Designer.cs
+    [Migration("20260117085642_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,12 +199,6 @@ namespace Garage3.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
-<<<<<<<< HEAD:Garage3/Migrations/20260116175719_InitH.Designer.cs
-
-                    b.HasIndex("RegistrationNumber")
-                        .IsUnique();
-========
->>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116234356_Init.Designer.cs
 
                     b.HasIndex("VehicleTypeId");
 
@@ -392,15 +381,9 @@ namespace Garage3.Migrations
             modelBuilder.Entity("Garage3.Models.Vehicle", b =>
                 {
                     b.HasOne("Garage3.Models.ApplicationUser", "Owner")
-<<<<<<<< HEAD:Garage3/Migrations/20260116175719_InitH.Designer.cs
                         .WithMany("Vehicles")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Restrict)
-========
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
->>>>>>>> hue/feature/ParkingSpots:Garage3/Migrations/20260116234356_Init.Designer.cs
                         .IsRequired();
 
                     b.HasOne("Garage3.Models.VehicleType", "Type")
