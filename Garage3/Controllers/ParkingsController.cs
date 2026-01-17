@@ -24,15 +24,6 @@ namespace Garage3.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index(string searchType = null, string searchRegNo = null)
         {
-            //var query = _context.Parkings
-            //   .Include(p => p.Vehicle)
-            //       .ThenInclude(v => v.Type)
-            //   .Include(p => p.Vehicle)
-            //       .ThenInclude(v => v.Owner)
-            //   .Include(p => p.ParkingSpot)
-            //   .Where(p => p.DepartTime == null) // only active
-            //   .AsQueryable();
-
             var query = _context.Parkings
                         .Include(p => p.Vehicle)
                         .ThenInclude(v => v.Type)

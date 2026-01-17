@@ -7,14 +7,15 @@ namespace Garage3.Helpers
 	public static class PriceCalculation
 	{
 		// Extensionmetod för att beräkna priset för en parked bil
-		//public static double CalculatePrice(this Vehicle vehicle, DateTime checkoutTime, double hourlyPrice)
-		//{
-		//	//var timeParked = checkoutTime.Subtract(vehicle.ArrivalTime);
+		public static double CalculatePrice(this Parking parking, double hourlyPrice)
+		{
+            if (parking.DepartTime == null)
+                return 0;
 
-		//	//var totalCost = timeParked.TotalHours * hourlyPrice;
-		//	//totalCost = Math.Round(totalCost, 2);
+            var timeParked = parking.DepartTime.Value - parking.ArrivalTime;
+            var totalCost = timeParked.TotalHours * hourlyPrice;
 
-		//	//return totalCost;
-		//}
+            return Math.Round(totalCost, 2);
+        }
 	}
 }

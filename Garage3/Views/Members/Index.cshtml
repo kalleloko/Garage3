@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Garage3.Models.MemberListViewModel>
+
+@{
+    ViewData["Title"] = "Members";
+}
+
+<h1>Members</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>MemberId</th>
+            <th>MemberName</th>
+            <th>VehicleCount</th>
+            <th>TotalParkingCost</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.MemberId</td>
+                <td>@p.MemberName</td>
+                <td>@p.VehicleCount</td>
+                <td>@p.TotalParkingCost</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@p.MemberId" class="btn btn-info btn-sm">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

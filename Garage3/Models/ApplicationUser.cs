@@ -16,5 +16,7 @@ namespace Garage3.Models
 
         [Display(Name = "Social Security Number")]
         public string SSN { get; set; }
+
+        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     }
 }
