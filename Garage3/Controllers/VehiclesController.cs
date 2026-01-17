@@ -12,6 +12,7 @@ using System.Security.Claims;
 
 namespace Garage3.Controllers
 {
+    [Authorize]
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +23,6 @@ namespace Garage3.Controllers
         }
 
         // GET: Vehicles
-        [Authorize(Roles = "Member")]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -203,7 +203,7 @@ namespace Garage3.Controllers
                                    })
                                    .ToListAsync();
 
-            var vm = new ParkVehicleViewModel
+            var vm = new UserParkVehicleViewModel
             {
                 VehicleId = vehicle.Id,
                 RegistrationNumber = vehicle.RegistrationNumber,
@@ -215,7 +215,7 @@ namespace Garage3.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Park(ParkVehicleViewModel model)
+        public async Task<IActionResult> Park(UserParkVehicleViewModel model)
         {
             
             var vehicle = await _context.Vehicles

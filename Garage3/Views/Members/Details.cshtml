@@ -1,0 +1,35 @@
+﻿@model Garage3.Models.MemberDetailsViewModel
+
+@{
+    ViewData["Title"] = "Member Details";
+}
+
+<h1>Member Details: @Model.MemberName</h1>
+
+<p>Total Vehicles: @Model.Vehicles.Count</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Registration Number</th>
+            <th>Vehicle Type</th>
+            <th>Brand</th>
+            <th>Parking Status</th>
+            <th>Arrival Time</th>
+            <th>Accumulated Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model.Vehicles)
+        {
+            <tr>
+                <td>@vehicle.RegistrationNumber</td>
+                <td>@vehicle.VehicleType</td>
+                <td>@vehicle.Brand</td>
+                <td>@vehicle.ParkingStatus</td>
+                <td>@(vehicle.ArrivalTime.HasValue? vehicle.ArrivalTime.Value.ToString("g") : "-")</td>
+                <td>@vehicle.AccumulatedCost.ToString("C")</td>
+            </tr>
+        }
+    </tbody>
+</table>

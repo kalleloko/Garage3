@@ -4,7 +4,7 @@ using Microsoft.Build.Framework;
 
 namespace Garage3.Models
 {
-    public class ParkVehicleViewModel
+    public class UserParkVehicleViewModel
     {
         public int VehicleId { get; set; }
         public string RegistrationNumber { get; set; } = string.Empty;

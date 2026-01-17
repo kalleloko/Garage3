@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Garage3.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ParkingSpotsController : Controller
     {
         private readonly ApplicationDbContext _context;
