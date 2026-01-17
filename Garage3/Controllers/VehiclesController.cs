@@ -12,6 +12,7 @@ using System.Security.Claims;
 
 namespace Garage3.Controllers
 {
+    [Authorize]
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +23,6 @@ namespace Garage3.Controllers
         }
 
         // GET: Vehicles
-        [Authorize(Roles = "Member")]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

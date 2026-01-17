@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Garage3.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ParkingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,7 +22,6 @@ namespace Garage3.Controllers
         }
 
         // GET: Parkings
-        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index(string searchType = null, string searchRegNo = null)
         {
             var query = _context.Parkings

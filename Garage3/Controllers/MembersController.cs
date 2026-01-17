@@ -1,12 +1,14 @@
 ﻿using Garage3.Data;
 using Garage3.Helpers;
 using Garage3.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Garage3.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -15,7 +17,6 @@ namespace Garage3.Controllers
         {
             _context = context;
         }
-
         public async Task<IActionResult> Index()
         {
             const double hourlyPrice = 20.0;
