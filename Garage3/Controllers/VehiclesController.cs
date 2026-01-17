@@ -201,7 +201,7 @@ namespace Garage3.Controllers
                                    })
                                    .ToListAsync();
 
-            var vm = new ParkVehicleViewModel
+            var vm = new UserParkVehicleViewModel
             {
                 VehicleId = vehicle.Id,
                 RegistrationNumber = vehicle.RegistrationNumber,
@@ -213,7 +213,7 @@ namespace Garage3.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Park(ParkVehicleViewModel model)
+        public async Task<IActionResult> Park(UserParkVehicleViewModel model)
         {
             
             var vehicle = await _context.Vehicles
