@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,15 @@ namespace Garage3.Models
         public int Id { get; set; }
 
         public int VehicleTypeId { get; set; }
+
+        [ValidateNever]
         public VehicleType Type { get; set; }
+
+        public string OwnerId { get; set; } = string.Empty;
+
+        [ValidateNever]
+        public ApplicationUser Owner { get; set; } = null!;
+
 
         [Required]
         [StringLength(VehicleRules.RegistrationNumberMaxLength)]
@@ -19,6 +28,7 @@ namespace Garage3.Models
 
         [StringLength(VehicleRules.ColorMaxLength)]
         public string Color { get; set; } = string.Empty;
+
 
         [StringLength(VehicleRules.BrandMaxLength)]
         public string Brand { get; set; } = string.Empty;
@@ -31,7 +41,7 @@ namespace Garage3.Models
         public int WheelCount { get; set; }
 
         [Display(Name = "Arrival Time")]
-        public DateTime ArrivalTime => DateTime.Now; // TODO: Should be calculated from Parkings
+        public DateTime? ArrivalTime => ActiveParking?.ArrivalTime ?? null;
 
         public ICollection<Parking> Parkings { get; set; } = new List<Parking>();
 

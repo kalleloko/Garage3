@@ -255,7 +255,7 @@ namespace Garage3.Controllers
                 .Select(v => new VehicleViewModel
                 {
                     Id = v.Id,
-                    ArrivalTime = v.ArrivalTime,
+                    //ArrivalTime = v.ArrivalTime,
                     RegistrationNumber = v.RegistrationNumber,
                     Type = v.Type,
                 })
@@ -293,7 +293,7 @@ namespace Garage3.Controllers
             {
                 Id = vehicle.Id,
                 Type = vehicle.Type,
-                ArrivalTime = vehicle.ArrivalTime,
+                //ArrivalTime = vehicle.ArrivalTime,
                 Brand = vehicle.Brand,
                 Color = vehicle.Color,
                 Model = vehicle.Model,

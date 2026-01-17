@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Garage3.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WheelCount)
+            </th>
+            <th>
+                Parking status
+            </th>
+            <th>
+                Arrival time
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Type.Name
+                </td>
+                <td>
+                    @item.RegistrationNumber
+                </td>
+                <td>
+                    @item.Color
+                </td>
+                <td>
+                    @item.Brand
+                </td>
+                <td>
+                    @item.Model
+                </td>
+                <td>
+                    @item.WheelCount
+                </td>
+                <td>@(item.ActiveParking != null ? "Parked" : "Free")</td>
+                <td>@(item.ActiveParking != null ? item.ActiveParking.ArrivalTime.ToString("g") : "-")</td>
+                <td>
+                    @if (item.ActiveParking != null)
+                    {
+                    <form asp-action="Checkout" method="post" style="display:inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="vehicleId" value="@item.Id" />
+                        <button type="submit" class="btn btn-sm btn-warning">Checkout</button>
+                    </form>
+                    }
+                    @if (item.ActiveParking == null)
+                    {
+                        <a asp-action="Park" asp-route-id="@item.Id" class="btn btn-sm btn-success">Park</a>
+                    }
+                </td>
+
+        </tr>
+}
+    </tbody>
+</table>

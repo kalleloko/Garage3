@@ -1,0 +1,20 @@
+﻿@model Garage3.Models.ParkVehicleViewModel
+@{
+    ViewData["Title"] = "Park Vehicle";
+}
+
+<h2>Park Vehicle: @Model.RegistrationNumber</h2>
+
+<form asp-action="Park" method="post">
+    <input type="hidden" asp-for="VehicleId" />
+
+    <div class="form-group">
+        <select asp-for="ParkingSpotId" class="form-control" asp-items="Model.FreeParkingSpots">
+            <option value="">-- Select a parking spot --</option>
+        </select>
+        <span asp-validation-for="ParkingSpotId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Park Vehicle</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

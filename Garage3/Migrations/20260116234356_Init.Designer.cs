@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage3.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260116161756_Init")]
+    [Migration("20260116234356_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -181,6 +181,10 @@ namespace Garage3.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("RegistrationNumber")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -194,8 +198,7 @@ namespace Garage3.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RegistrationNumber")
-                        .IsUnique();
+                    b.HasIndex("OwnerId");
 
                     b.HasIndex("VehicleTypeId");
 
@@ -377,11 +380,19 @@ namespace Garage3.Migrations
 
             modelBuilder.Entity("Garage3.Models.Vehicle", b =>
                 {
+                    b.HasOne("Garage3.Models.ApplicationUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Garage3.Models.VehicleType", "Type")
                         .WithMany()
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Owner");
 
                     b.Navigation("Type");
                 });
