@@ -1,14 +1,12 @@
-﻿@model Receipt
+﻿@model CheckoutConfirmViewModel
 
-<h2>Checkout Receipt</h2>
+<h2>Checkout Confirmation</h2>
 
 <table class="table">
     <tr><th>Registration</th><td>@Model.RegistrationNumber</td></tr>
     <tr><th>Vehicle Type</th><td>@Model.VehicleType</td></tr>
     <tr><th>Parking Spot</th><td>@Model.ParkingSpotNumber</td></tr>
-    <tr><th>Arrival</th><td>@Model.ArrivalTime</td></tr>
-    <tr><th>Checkout</th><td>@Model.CheckoutTime</td></tr>
-    <tr><th>Total Cost</th><td>@Model.Price SEK</td></tr>
+    <tr><th>Arrival Time</th><td>@Model.ArrivalTime</td></tr>
 </table>
 
 <form asp-action="ConfirmCheckout" method="post">

@@ -288,7 +288,6 @@ namespace Garage3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(int vehicleId)
         {
-            const double hourlyPrice = 20.0;
             // Load vehicle and active parking
             var vehicle = await _context.Vehicles
                 .Include(v => v.Type)
@@ -308,15 +307,13 @@ namespace Garage3.Controllers
             // Set departure time
             var checkoutTime = DateTime.Now;
 
-            var vm = new Receipt
+            var vm = new CheckoutConfirmViewModel
             {
                 VehicleId = vehicle.Id,
                 RegistrationNumber = vehicle.RegistrationNumber,
                 VehicleType = vehicle.Type.Name,
                 ParkingSpotNumber = activeParking.ParkingSpot.SpotNumber,
                 ArrivalTime = activeParking.ArrivalTime,
-                CheckoutTime = checkoutTime,
-                Price = activeParking.CalculatePrice(hourlyPrice,checkoutTime)
             };
 
             return View("Checkout",vm);
@@ -326,8 +323,10 @@ namespace Garage3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmCheckout(int vehicleId)
         {
+            const double hourlyPrice = 20.0;
             // Load vehicle and active parking
             var vehicle = await _context.Vehicles
+                .Include(v => v.Type)
                 .Include(v => v.Parkings)
                 .ThenInclude(p => p.ParkingSpot)
                 .FirstOrDefaultAsync(v => v.Id == vehicleId);
@@ -343,10 +342,24 @@ namespace Garage3.Controllers
 
             // Set departure time
             activeParking.DepartTime = DateTime.Now;
+            var checkoutTime = DateTime.Now;
+            var price = activeParking.CalculatePrice(hourlyPrice);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+
+            var vm = new Receipt
+            {
+                VehicleId = vehicle.Id,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                VehicleType = vehicle.Type.Name,
+                ParkingSpotNumber = activeParking.ParkingSpot.SpotNumber,
+                ArrivalTime = activeParking.ArrivalTime,
+                CheckoutTime = checkoutTime,
+                Price = activeParking.CalculatePrice(hourlyPrice, checkoutTime)
+            };
+
+            return View("Receipt", vm);
         }
 
 
