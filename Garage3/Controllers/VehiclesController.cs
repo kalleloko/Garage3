@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace Garage3.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Member,Admin")]
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -113,6 +113,11 @@ namespace Garage3.Controllers
             {
                 return NotFound();
             }
+            var existingVehicle = await _context.Vehicles.AsNoTracking().FirstOrDefaultAsync(v => v.Id == id);
+            if (existingVehicle == null)
+                return NotFound();
+
+            vehicle.OwnerId = existingVehicle.OwnerId;
 
             if (ModelState.IsValid)
             {
@@ -195,7 +200,8 @@ namespace Garage3.Controllers
                 return BadRequest("Vehicle is already parked");
 
             var freeSpots = await _context.ParkingSpots
-                                   .Where(p => !_context.Parkings.Any(parking => parking.ParkingSpotId == p.Id && parking.DepartTime == null))
+                                   .Where(ps => !ps.IsBlocked 
+                                    && !_context.Parkings.Any(p => p.ParkingSpotId == ps.Id && p.DepartTime == null))
                                    .Select(p => new SelectListItem
                                    {
                                        Value = p.Id.ToString(),
@@ -234,20 +240,22 @@ namespace Garage3.Controllers
             {
                 model.RegistrationNumber = vehicle.RegistrationNumber;
                 model.FreeParkingSpots = await _context.ParkingSpots
-                                                .Where(ps => !_context.Parkings.Any(p =>
-                                                p.ParkingSpotId == ps.Id && p.DepartTime == null))
-                                                .Select(ps => new SelectListItem
-                                                {
-                                                    Value = ps.Id.ToString(),
-                                                    Text = ps.SpotNumber
-                                                })
-                                                .ToListAsync();
+                                        .Where(ps => !ps.IsBlocked 
+                                         && !_context.Parkings.Any(p => p.ParkingSpotId == ps.Id && p.DepartTime == null)) 
+                                        .Select(ps => new SelectListItem
+                                        {
+                                         Value = ps.Id.ToString(),
+                                         Text = ps.SpotNumber
+                                         })
+                                        .ToListAsync();
 
                 return View(model);
             }
-            // Extra safety: make sure spot exists and is free
+            //  make sure spot exists and is free
             var spotExists = await _context.ParkingSpots
-                .AnyAsync(ps => ps.Id == model.ParkingSpotId && !_context.Parkings.Any(p => p.ParkingSpotId == ps.Id && p.DepartTime == null) && !ps.IsBlocked);
+                    .AnyAsync(ps => ps.Id == model.ParkingSpotId
+                    && !ps.IsBlocked
+                    && !_context.Parkings.Any(p => p.ParkingSpotId == ps.Id && p.DepartTime == null));
 
             if (!spotExists)
             {
@@ -272,7 +280,7 @@ namespace Garage3.Controllers
 
             _context.Parkings.Add(parking);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Vehicles");
         }
 
         [HttpPost]

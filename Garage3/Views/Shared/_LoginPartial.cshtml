@@ -11,7 +11,7 @@
         </a> 
         <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a> 
-            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")"> 
+            <form asp-area="Identity" asp-page="/Account/Logout"> 
                 <button type="submit" class="dropdown-item">Logout</button> 
             </form>
         </div> 
