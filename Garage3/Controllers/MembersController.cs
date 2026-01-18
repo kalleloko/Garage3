@@ -28,7 +28,7 @@ namespace Garage3.Controllers
             var model = users.Select(u => new MemberListViewModel
             {
                 MemberId = u.Id,
-                MemberName = u.UserName,
+                MemberName = u.FirstName + " " + u.LastName,
                 VehicleCount = u.Vehicles.Count,
                 TotalParkingCost = u.Vehicles
                                   .SelectMany(v => v.Parkings)

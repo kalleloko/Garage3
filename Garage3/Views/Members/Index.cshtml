@@ -9,10 +9,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>MemberId</th>
-            <th>MemberName</th>
-            <th>VehicleCount</th>
-            <th>TotalParkingCost</th>
+            <th>Name</th>
+            <th>Total vehicles</th>
+            <th>Parking Cost</th>
           
         </tr>
     </thead>
@@ -20,7 +19,6 @@
         @foreach (var p in Model)
         {
             <tr>
-                <td>@p.MemberId</td>
                 <td>@p.MemberName</td>
                 <td>@p.VehicleCount</td>
                 <td>@p.TotalParkingCost</td>

@@ -9,20 +9,20 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Owner</th>
             <th>Type</th>
             <th>Reg No</th>
-            <th>Spot</th>
-            <th>Parked Date</th>
+            <th>Owner</th>
+            <th>Park slot</th>
+            <th>Arrival Time</th>
             <th>Parked Time</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var p in Model) {
         <tr>
-                <td>@p.OwnerName</td>
                 <td>@p.VehicleType</td>
                 <td>@p.RegistrationNumber</td>
+                <td>@p.OwnerName</td>
                 <td>@p.ParkingSpotNumber</td>
                 <td>@p.ArrivalTime</td>
                 <td>@p.ParkedSince.ToString("hh\\:mm")</td>
