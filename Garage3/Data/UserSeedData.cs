@@ -27,14 +27,16 @@ namespace Garage3.Data
             var adminEmail = "admin@admin.com";
             var memberEmail = "member@member.com";
 
-            var admin = await AddAccountAsync(adminEmail, "Admin", "Johansoon", "199010112382", "Test.qrw1!");
+            // SSN's for testing purpose can be found here:
+            //   https://www7.skatteverket.se/portal/apier-och-oppna-data/utvecklarportalen/oppetdata/Test%C2%AD%C2%ADpersonnummer
+
+            var admin = await AddAccountAsync(adminEmail, "Admin", "Johansson", "199010112382", "Test.qrw1!");
             var member = await AddAccountAsync(memberEmail, "Member", "Smith", "199912122380", "Test.qrw2!");
 
             await AddUserToRoleAsync(admin, "Admin");
             await AddUserToRoleAsync(member, "Member");
 
             return new[] { admin, member };
-
         }
 
         private static async Task AddUserToRoleAsync(ApplicationUser user, string roleName)
@@ -42,7 +44,8 @@ namespace Garage3.Data
             if (!await _userManager.IsInRoleAsync(user, roleName))
             {
                 var result = await _userManager.AddToRoleAsync(user, roleName);
-                if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors.Select(e => e.Description)));
+                if (!result.Succeeded)
+                    throw new Exception(string.Join("\n", result.Errors.Select(e => e.Description)));
             }
         }
 
@@ -50,7 +53,8 @@ namespace Garage3.Data
         {
             var found = await _userManager.FindByNameAsync(accountEmail);
 
-            if (found != null) return found;
+            if (found != null)
+                return found;
 
             var user = new ApplicationUser
             {
@@ -64,7 +68,8 @@ namespace Garage3.Data
 
             var result = await _userManager.CreateAsync(user, pw);
 
-            if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors.Select(e => e.Description)));
+            if (!result.Succeeded)
+                throw new Exception(string.Join("\n", result.Errors.Select(e => e.Description)));
 
             return user;
         }
@@ -73,7 +78,8 @@ namespace Garage3.Data
         {
             foreach (var roleName in roleNames)
             {
-                if (await _roleManager.RoleExistsAsync(roleName)) continue;
+                if (await _roleManager.RoleExistsAsync(roleName))
+                    continue;
 
                 var role = new IdentityRole { Name = roleName };
 
