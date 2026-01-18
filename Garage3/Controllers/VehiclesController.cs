@@ -9,6 +9,7 @@ using Garage3.Data;
 using Garage3.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Garage3.Helpers;
 
 namespace Garage3.Controllers
 {
@@ -286,6 +287,44 @@ namespace Garage3.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(int vehicleId)
+        {
+            const double hourlyPrice = 20.0;
+            // Load vehicle and active parking
+            var vehicle = await _context.Vehicles
+                .Include(v => v.Type)
+                .Include(v => v.Parkings)
+                .ThenInclude(p => p.ParkingSpot)
+                .FirstOrDefaultAsync(v => v.Id == vehicleId);
+
+            if (vehicle == null)
+                return NotFound();
+
+            // Find active parking
+            var activeParking = vehicle.Parkings.FirstOrDefault(p => p.DepartTime == null);
+
+            if (activeParking == null)
+                return BadRequest("Vehicle is not currently parked");
+
+            // Set departure time
+            var checkoutTime = DateTime.Now;
+
+            var vm = new Receipt
+            {
+                VehicleId = vehicle.Id,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                VehicleType = vehicle.Type.Name,
+                ParkingSpotNumber = activeParking.ParkingSpot.SpotNumber,
+                ArrivalTime = activeParking.ArrivalTime,
+                CheckoutTime = checkoutTime,
+                Price = activeParking.CalculatePrice(hourlyPrice,checkoutTime)
+            };
+
+            return View("Checkout",vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmCheckout(int vehicleId)
         {
             // Load vehicle and active parking
             var vehicle = await _context.Vehicles
