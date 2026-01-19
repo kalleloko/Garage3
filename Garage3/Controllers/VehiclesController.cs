@@ -30,6 +30,7 @@ namespace Garage3.Controllers
             var applicationDbContext = _context.Vehicles
                                         .Include(v => v.Owner)
                                         .Include(v =>  v.Parkings)
+                                        .ThenInclude(v => v.ParkingSpot)
                                         .Include(v => v.Type)
                                         .Where(v => v.Owner.Id == userId);
             return View(await applicationDbContext.ToListAsync());
@@ -191,10 +192,18 @@ namespace Garage3.Controllers
 
             var vehicle = await _context.Vehicles
                                 .Include(v => v.Parkings)
+                                .Include(v => v.Owner)
                                 .FirstOrDefaultAsync(v => v.Id == id);
 
             if (vehicle == null)
                 return NotFound();
+            //check old av owner have to over 18
+
+            var SSN = vehicle.Owner.SSN;
+            var age = SSNHandler.AgeOfPerson(SSN);
+
+            if(age <= 17)
+                return BadRequest("You are under 18 old so cannot park");
 
             var activeParking = vehicle.Parkings.Any(p => p.DepartTime == null);
             if (activeParking)

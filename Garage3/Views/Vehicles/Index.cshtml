@@ -61,7 +61,7 @@
                 <td>
                     @item.WheelCount
                 </td>
-                <td>@(item.ActiveParking != null ? "Parked" : "Free")</td>
+                <td>@(item.ActiveParking != null ?  item.ActiveParking.ParkingSpot?.SpotNumber : " ")</td>
                 <td>@(item.ActiveParking != null ? item.ActiveParking.ArrivalTime.ToString("g") : "-")</td>
                 <td>
                     @if (item.ActiveParking != null)
