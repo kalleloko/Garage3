@@ -27,12 +27,17 @@ namespace Garage3.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationDbContext = _context.Vehicles
+            IQueryable<Vehicle> applicationDbContext = _context.Vehicles
                                         .Include(v => v.Owner)
-                                        .Include(v =>  v.Parkings)
+                                        .Include(v => v.Parkings)
                                         .ThenInclude(v => v.ParkingSpot)
-                                        .Include(v => v.Type)
-                                        .Where(v => v.Owner.Id == userId);
+                                        .Include(v => v.Type);
+                                        //.Where(v => v.Owner.Id == userId);
+
+            if (!User.IsInRole("Admin"))
+            {
+                applicationDbContext = applicationDbContext.Where(v => v.Owner.Id == userId);
+            }
             return View(await applicationDbContext.ToListAsync());
         }
 

@@ -45,6 +45,7 @@ namespace Garage3.Controllers
             var member = await _context.Users
                 .Include(u => u.Vehicles)
                     .ThenInclude(v => v.Parkings)
+                    .ThenInclude(v => v.ParkingSpot)
                 .Include(u => u.Vehicles)
                     .ThenInclude(v => v.Type)
                 .FirstOrDefaultAsync(u => u.Id == id);
@@ -61,7 +62,7 @@ namespace Garage3.Controllers
                     RegistrationNumber = v.RegistrationNumber,
                     VehicleType = v.Type.Name,
                     Brand = v.Brand,
-                    ParkingStatus = v.ActiveParking != null ? "Parked" : "Free",
+                    ParkingStatus = v.ActiveParking != null ? v.ActiveParking.ParkingSpot.SpotNumber : "",
                     ArrivalTime = v.ActiveParking?.ArrivalTime,
 
                     AccumulatedCost = v.Parkings
