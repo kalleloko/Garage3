@@ -1,5 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 
+// Swedish SSN's for testing purposes can be found here:
+//   https://www7.skatteverket.se/portal/apier-och-oppna-data/utvecklarportalen/oppetdata/Test%C2%AD%C2%ADpersonnummer
+// Information abouth Swedish SSN's can be found here:
+//   https://skatteverket.se/privat/folkbokforing/personnummer.4.3810a01c150939e893f18c29.html
+
 namespace Garage3.Helpers
 {
     /// <summary>
@@ -16,7 +21,7 @@ namespace Garage3.Helpers
         /// </summary>
         /// <remarks>
         /// We allow these five SSN formats: YYYYMMDD-NNNC (13 characters), YYYYMMDDNNNC (12 characters),
-        /// YYMMDD-NNNC (11 characters), YYMMDD+NNNC (person is >= 100 years) (11 characters) and
+        /// YYMMDD-NNNC (11 characters), YYMMDD+NNNC (person is 100 years or older) (11 characters) and
         /// YYMMDDNNNC (10 characters).
         /// </remarks>
         public static bool IsValid(string SSN)

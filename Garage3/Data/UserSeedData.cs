@@ -27,9 +27,6 @@ namespace Garage3.Data
             var adminEmail = "admin@admin.com";
             var memberEmail = "member@member.com";
 
-            // SSN's for testing purpose can be found here:
-            //   https://www7.skatteverket.se/portal/apier-och-oppna-data/utvecklarportalen/oppetdata/Test%C2%AD%C2%ADpersonnummer
-
             var admin = await AddAccountAsync(adminEmail, "Admin", "Johansson", "199010112382", "Test.qrw1!");
             var member = await AddAccountAsync(memberEmail, "Member", "Smith", "199912122380", "Test.qrw2!");
 
