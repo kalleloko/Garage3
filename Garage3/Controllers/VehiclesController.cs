@@ -197,13 +197,11 @@ namespace Garage3.Controllers
 
             if (vehicle == null)
                 return NotFound();
-            //check old av owner have to over 18
 
             var SSN = vehicle.Owner.SSN;
             var age = SSNHandler.AgeOfPerson(SSN);
-
-            if(age <= 17)
-                return BadRequest("You are under 18 old so cannot park");
+            if (age < 18)
+                return BadRequest("You cannot park because you are under 18 years old.");
 
             var activeParking = vehicle.Parkings.Any(p => p.DepartTime == null);
             if (activeParking)
