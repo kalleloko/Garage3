@@ -61,7 +61,7 @@
                 <td>
                     @item.WheelCount
                 </td>
-                <td>@(item.ActiveParking != null ? "Parked" : "Free")</td>
+                <td>@(item.ActiveParking != null ?  item.ActiveParking.ParkingSpot?.SpotNumber : " ")</td>
                 <td>@(item.ActiveParking != null ? item.ActiveParking.ArrivalTime.ToString("g") : "-")</td>
                 <td>
                     @if (item.ActiveParking != null)
@@ -78,7 +78,7 @@
                     }
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">Delete</a>
+                    @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">Delete</a> *@
                 </td>
 
         </tr>

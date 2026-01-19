@@ -169,7 +169,7 @@ namespace Garage3.Controllers
         {
             var spot = await _context.ParkingSpots.FindAsync(spotId);
             if (spot == null) return NotFound();
-
+            // Todo: innan byta status behöver man kolla den spot is occupied true elller inte
             spot.IsBlocked = true;
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

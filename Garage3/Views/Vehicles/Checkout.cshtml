@@ -1,0 +1,16 @@
+﻿@model CheckoutConfirmViewModel
+
+<h2>Checkout Confirmation</h2>
+
+<table class="table">
+    <tr><th>Registration</th><td>@Model.RegistrationNumber</td></tr>
+    <tr><th>Vehicle Type</th><td>@Model.VehicleType</td></tr>
+    <tr><th>Parking Spot</th><td>@Model.ParkingSpotNumber</td></tr>
+    <tr><th>Arrival Time</th><td>@Model.ArrivalTime</td></tr>
+</table>
+
+<form asp-action="ConfirmCheckout" method="post">
+    <input type="hidden" name="vehicleId" value="@Model.VehicleId" />
+    <button type="submit" class="btn btn-danger">Confirm Checkout</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

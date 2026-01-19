@@ -1,0 +1,26 @@
+﻿@model Receipt
+
+<h2>Receipt</h2>
+
+<table class="table">
+    <tr><th>Registration</th><td>@Model.RegistrationNumber</td></tr>
+    <tr><th>Vehicle Type</th><td>@Model.VehicleType</td></tr>
+    <tr><th>Parking Spot</th><td>@Model.ParkingSpotNumber</td></tr>
+    <tr><th>Arrival Time</th><td>@Model.ArrivalTime</td></tr>
+    <tr><th>Depart Time</th><td>@Model.CheckoutTime</td></tr>
+    <tr><th>Parking Cost</th><td>@Model.Price</td></tr>
+
+</table>
+
+    <form asp-action="ConfirmCheckout" method="post">
+        <button type="button"
+                class="btn btn-primary d-print-none"
+                onclick="window.print()">
+            Print
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary d-print-none">
+            Back to vehicles
+        </a>
+    </form>
+

@@ -9,6 +9,7 @@ using Garage3.Data;
 using Garage3.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Garage3.Helpers;
 
 namespace Garage3.Controllers
 {
@@ -26,14 +27,12 @@ namespace Garage3.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IQueryable<Vehicle> applicationDbContext = _context.Vehicles
+            var applicationDbContext = _context.Vehicles
                                         .Include(v => v.Owner)
-                                        .Include(v => v.Parkings)
-                                        .Include(v => v.Type);
-            if(!User.IsInRole("Admin"))
-            {
-                applicationDbContext = applicationDbContext.Where(v => v.Owner.Id == userId);
-            }
+                                        .Include(v =>  v.Parkings)
+                                        .ThenInclude(v => v.ParkingSpot)
+                                        .Include(v => v.Type)
+                                        .Where(v => v.Owner.Id == userId);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -193,10 +192,18 @@ namespace Garage3.Controllers
 
             var vehicle = await _context.Vehicles
                                 .Include(v => v.Parkings)
+                                .Include(v => v.Owner)
                                 .FirstOrDefaultAsync(v => v.Id == id);
 
             if (vehicle == null)
                 return NotFound();
+            //check old av owner have to over 18
+
+            var SSN = vehicle.Owner.SSN;
+            var age = SSNHandler.AgeOfPerson(SSN);
+
+            if(age <= 17)
+                return BadRequest("You are under 18 old so cannot park");
 
             var activeParking = vehicle.Parkings.Any(p => p.DepartTime == null);
             if (activeParking)
@@ -292,6 +299,43 @@ namespace Garage3.Controllers
         {
             // Load vehicle and active parking
             var vehicle = await _context.Vehicles
+                .Include(v => v.Type)
+                .Include(v => v.Parkings)
+                .ThenInclude(p => p.ParkingSpot)
+                .FirstOrDefaultAsync(v => v.Id == vehicleId);
+
+            if (vehicle == null)
+                return NotFound();
+
+            // Find active parking
+            var activeParking = vehicle.Parkings.FirstOrDefault(p => p.DepartTime == null);
+
+            if (activeParking == null)
+                return BadRequest("Vehicle is not currently parked");
+
+            // Set departure time
+            var checkoutTime = DateTime.Now;
+
+            var vm = new CheckoutConfirmViewModel
+            {
+                VehicleId = vehicle.Id,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                VehicleType = vehicle.Type.Name,
+                ParkingSpotNumber = activeParking.ParkingSpot.SpotNumber,
+                ArrivalTime = activeParking.ArrivalTime,
+            };
+
+            return View("Checkout",vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ConfirmCheckout(int vehicleId)
+        {
+            const double hourlyPrice = 20.0;
+            // Load vehicle and active parking
+            var vehicle = await _context.Vehicles
+                .Include(v => v.Type)
                 .Include(v => v.Parkings)
                 .ThenInclude(p => p.ParkingSpot)
                 .FirstOrDefaultAsync(v => v.Id == vehicleId);
@@ -307,10 +351,24 @@ namespace Garage3.Controllers
 
             // Set departure time
             activeParking.DepartTime = DateTime.Now;
+            var checkoutTime = DateTime.Now;
+            var price = activeParking.CalculatePrice(hourlyPrice);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+
+            var vm = new Receipt
+            {
+                VehicleId = vehicle.Id,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                VehicleType = vehicle.Type.Name,
+                ParkingSpotNumber = activeParking.ParkingSpot.SpotNumber,
+                ArrivalTime = activeParking.ArrivalTime,
+                CheckoutTime = checkoutTime,
+                Price = activeParking.CalculatePrice(hourlyPrice, checkoutTime)
+            };
+
+            return View("Receipt", vm);
         }
 
 
