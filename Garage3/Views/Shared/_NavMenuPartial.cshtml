@@ -30,12 +30,12 @@
                             Parking Slots
                         </a>
                     </li>
-                    <li class="nav-item">
+                    @* <li class="nav-item">
                         <a class="nav-link @(controller == "Users" ? "active" : "")"
                            asp-controller="Users" asp-action="Index">
                             Users
                         </a>
-                    </li>
+                    </li> *@
                 }
 
                 @if (User.IsInRole("Member") || User.IsInRole("Admin"))
@@ -43,8 +43,14 @@
                     <li class="nav-item">
                         <a class="nav-link @(controller == "Vehicles" ? "active" : "")"
                            asp-controller="Vehicles" asp-action="Index">
-                            My Vehicles
-                        </a>
+                            @if(!User.IsInRole("Admin"))
+                                {
+                                    <span>My Vehicles</span>
+                                } else
+                                {
+                                    <span>All Vehicles</span>
+                                }
+                            </a>
                     </li>
                 }
             }
