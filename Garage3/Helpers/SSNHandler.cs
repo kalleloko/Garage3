@@ -2,7 +2,7 @@
 
 // Swedish SSN's for testing purposes can be found here:
 //   https://www7.skatteverket.se/portal/apier-och-oppna-data/utvecklarportalen/oppetdata/Test%C2%AD%C2%ADpersonnummer
-// Information abouth Swedish SSN's can be found here:
+// Information about Swedish SSN's can be found here:
 //   https://skatteverket.se/privat/folkbokforing/personnummer.4.3810a01c150939e893f18c29.html
 
 namespace Garage3.Helpers
@@ -34,7 +34,8 @@ namespace Garage3.Helpers
         }
 
         /// <summary>
-        /// Returns the age of the person with the SSN in full/completed years if the SSN is valid, otherwise zero.
+        /// Returns the age of the person with the SSN in full/completed years if the SSN is valid,
+        /// otherwise zero.
         /// </summary>
         public static int AgeOfPerson(string SSN)
         {
@@ -70,12 +71,38 @@ namespace Garage3.Helpers
 
         private static string CenturyForSSNWithoutCentury(string SSNWithoutCentury)
         {
+            // This code handles that the plus sign is used from 1 January the year the person
+            // with the SSN turns 100 years old, regardless of the date of year the person was
+            // born. (This follows the standard usage of the plus sign.)
+            // Information about this can be found here:
+            //   https://www4.skatteverket.se/rattsligvagledning/edition/2020.15/330245.html
+            //   https://www4.skatteverket.se/rattsligvagledning/28831.html?date=2026-01-01#section1-18
+            if (SSNWithoutCentury.Contains('+'))
+            {
+                var todaysYearWithoutCentury = DateTime.Today.ToString("yy");
+                var yearInSSNWithoutCentury = SSNWithoutCentury[..2];
+                return string.Compare(yearInSSNWithoutCentury, todaysYearWithoutCentury) >= 0 ? "18" : "19";
+            }
+            else
+            {
+                var todaysDateWithoutCentury = DateTime.Today.ToString("yyMMdd");
+                var dateInSSNWithoutCentury = SSNWithoutCentury[..6];
+                return string.Compare(dateInSSNWithoutCentury, todaysDateWithoutCentury) > 0 ? "19" : "20";
+            }
+        }
+
+        /*
+        private static string CenturyForSSNWithoutCentury(string SSNWithoutCentury)
+        {
+            // This code handles that the plus sign is used from the exact date the person turns
+            // one hundred years old. This does not follow the standard usage of the plus sign.
             var todaysDateWithoutCentury = DateTime.Today.ToString("yyMMdd");
             var dateInSSNWithoutCentury = SSNWithoutCentury[..6];
             return string.Compare(dateInSSNWithoutCentury, todaysDateWithoutCentury) > 0
                 ? (SSNWithoutCentury.Contains('+') ? "18" : "19")
                 : (SSNWithoutCentury.Contains('+') ? "19" : "20");
         }
+        */
 
         private static string DateFromSSN(string SSN)
         {
